@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPDC 디지털리포트 Vol.2 · 걷는 도시, 인천</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0D1117; --card:#151C25; --card2:#1A222D; --ink:#E9EDF2; --ink2:#B4BECB;
+  --muted:#828E9C; --muted2:#5E6A78; --line:#232D3A; --line2:#1D2632;
+  --p1:#3EC1AC;  /* 길을 찾다 */
+  --p2:#E0803F;  /* 길을 안전하게 */
+  --p3:#A78BE0;  /* 길은 누구에게나 */
+  --p4:#5B9BD5;  /* 걷고 싶은 길 */
+  --ac:#E0803F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;line-height:1.62;overflow-x:hidden;
+  word-break:keep-all;overflow-wrap:break-word}
+.mono{font-family:"Space Mono",monospace}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.narrow{max-width:1000px;margin:0 auto;padding:0 32px}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ac);color:#0D1117}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.7;
+ background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,.028) 1px, transparent 0);background-size:24px 24px}
+main{position:relative;z-index:1}
+
+/* ===== MASTHEAD ===== */
+.mast{border-bottom:1px solid var(--line);padding:20px 0 15px;position:sticky;top:0;
+  background:rgba(13,17,23,.92);backdrop-filter:blur(10px);z-index:40}
+.mast .row{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.mast .brand{font-size:14px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:11px}
+.mast .brand .tag{font-family:"Space Mono";font-size:10.5px;font-weight:700;letter-spacing:.1em;
+  background:var(--ac);color:#0D1117;padding:3px 9px;border-radius:4px}
+.mast nav{display:flex;gap:18px;font-size:12.5px;color:var(--muted);font-weight:600}
+.mast nav a{transition:.2s}.mast nav a:hover{color:var(--ac)}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--ac);width:0;transition:width .12s linear}
+
+/* ===== COVER ===== */
+.cover{padding:96px 0 74px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;right:-14%;top:-30%;width:52rem;height:52rem;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, rgba(62,193,172,.13), transparent 62%);pointer-events:none}
+.issue-line{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.issue-line .ln{flex:1;height:1px;background:var(--line)}
+.issue-line .txt{font-family:"Space Mono";font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--ac);font-weight:700}
+.cover h1{font-size:clamp(40px,6.8vw,80px);font-weight:800;letter-spacing:-.042em;line-height:1.02;position:relative;z-index:1}
+.cover h1 .em{background:linear-gradient(100deg,var(--p1),var(--p4) 55%,var(--p3));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.cover .sub{display:block;font-size:clamp(18px,2.2vw,27px);font-weight:700;color:var(--muted);letter-spacing:-.02em;margin-top:18px}
+.cover .lede{margin-top:30px;max-width:700px;font-size:clamp(15px,1.5vw,17px);color:var(--ink2);position:relative;z-index:1}
+.cover .lede b{font-weight:700;color:var(--ink)}
+.cover .meta{display:flex;gap:30px;flex-wrap:wrap;margin-top:36px;font-size:12.5px;color:var(--muted)}
+.cover .meta b{color:var(--ink);font-weight:700;display:block;font-size:14px;margin-top:3px}
+.cover .meta .k{font-family:"Space Mono";font-size:10.5px;letter-spacing:.14em;color:var(--muted2)}
+
+/* ===== EDITORIAL ===== */
+.edit{padding:84px 0;border-bottom:1px solid var(--line)}
+.edit .q{font-size:clamp(21px,2.6vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.5;text-wrap:balance}
+.edit .q .hl{color:var(--p1)}
+.edit .q .big{display:inline-block;margin-top:10px;font-size:1.28em;letter-spacing:-.03em}
+.edit .hl2{color:var(--p2);font-weight:700}
+.edit p{margin-top:22px;font-size:15.5px;color:var(--ink2)}
+.edit .sign{margin-top:30px;font-family:"Space Mono";font-size:11.5px;letter-spacing:.14em;color:var(--muted2)}
+
+/* ===== PART ===== */
+.part{padding:96px 0;border-bottom:1px solid var(--line)}
+.part-head{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;margin-bottom:44px}
+.part-no{font-family:"Space Mono";font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--pc);
+  border:1px solid var(--pc);border-radius:999px;padding:6px 14px;white-space:nowrap;margin-top:8px}
+.part-head h2{font-size:clamp(27px,3.6vw,42px);font-weight:800;letter-spacing:-.03em;line-height:1.14}
+.part-head h2 .s{display:block;font-size:clamp(14px,1.5vw,16px);font-weight:600;color:var(--pc);
+  letter-spacing:.02em;margin-bottom:12px;font-family:"Space Mono"}
+.part-head .desc{margin-top:18px;font-size:15.5px;color:var(--ink2);max-width:860px}
+.part-head .desc b{color:var(--ink)}
+
+/* key points */
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:38px}
+.key{border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,var(--card2),var(--card));
+  padding:24px 22px;transition:.32s;position:relative;overflow:hidden}
+.key::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--pc);opacity:.6;transition:.3s}
+.key:hover{transform:translateY(-6px);border-color:var(--pc);box-shadow:0 24px 48px -32px var(--pc)}
+.key:hover::before{opacity:1;width:5px}
+.key .kt{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:9px}
+.key .kd{font-size:13.2px;color:var(--muted);line-height:1.7;letter-spacing:-.01em}
+
+/* related posts */
+.rel-label{display:flex;align-items:center;gap:14px;margin:0 0 18px}
+.rel-label .t{font-family:"Space Mono";font-size:11.5px;letter-spacing:.18em;color:var(--pc);font-weight:700}
+.rel-label .l{flex:1;height:1px;background:var(--line)}
+.rel{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.rcard{position:relative;display:flex;gap:18px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;
+  background:var(--card);padding:20px 22px;transition:transform .32s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s;cursor:pointer}
+.rcard:hover{transform:translateY(-5px);border-color:var(--pc);box-shadow:0 22px 44px -30px var(--pc)}
+.rcard .rno{font-family:"Space Mono";font-size:19px;font-weight:700;color:var(--pc);opacity:.5;line-height:1.15;flex:0 0 auto;transition:.3s}
+.rcard:hover .rno{opacity:1}
+.rcard .rb{flex:1;min-width:0}
+.rcard .rdate{font-family:"Space Mono";font-size:11px;color:var(--muted2);letter-spacing:.05em}
+.rcard h4{font-size:15px;font-weight:700;letter-spacing:-.015em;line-height:1.42;margin:5px 0 7px}
+.rcard .rs{font-size:12.5px;color:var(--muted);line-height:1.6}
+.rcard .rgo{margin-top:11px;font-size:12px;font-weight:700;color:var(--pc);opacity:0;transform:translateX(-5px);transition:.3s}
+.rcard:hover .rgo{opacity:1;transform:none}
+
+/* ===== FIELD MAP ===== */
+.fieldwrap{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.fitem{border:1px solid var(--line);border-radius:15px;background:var(--card);padding:22px 24px;transition:.3s;position:relative}
+.fitem:hover{border-color:var(--fc);transform:translateY(-4px);box-shadow:0 20px 40px -30px var(--fc)}
+.fitem .fl{font-family:"Space Mono";font-size:10.5px;letter-spacing:.14em;color:var(--fc);font-weight:700}
+.fitem h4{margin-top:8px;font-size:17px;font-weight:800;letter-spacing:-.02em}
+.fitem p{margin-top:8px;font-size:13.5px;color:var(--muted);line-height:1.65}
+.fitem .fs{margin-top:13px;padding-top:12px;border-top:1px dashed var(--line);font-size:12px;color:var(--muted2);
+  display:flex;align-items:center;gap:7px}
+.fitem .fs b{color:var(--fc);font-weight:700}
+
+/* ===== CITIZEN ===== */
+.citizen{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.cz{border:1px solid var(--line);border-radius:15px;background:linear-gradient(170deg,var(--card2),var(--card));
+  padding:22px 20px;transition:.32s;position:relative;overflow:hidden}
+.cz::after{content:attr(data-no);position:absolute;right:14px;bottom:6px;font-family:"Space Mono";font-size:44px;
+  font-weight:700;color:var(--p3);opacity:.14;letter-spacing:-.04em;transition:.32s}
+.cz:hover{transform:translateY(-6px);border-color:var(--p3);box-shadow:0 22px 44px -30px var(--p3)}
+.cz:hover::after{opacity:.3}
+.cz .cl{font-size:11px;font-weight:700;color:var(--p3);letter-spacing:.05em}
+.cz h4{margin-top:9px;font-size:15.5px;font-weight:800;letter-spacing:-.015em;position:relative;z-index:1}
+.cz p{margin-top:8px;font-size:12.5px;color:var(--muted);line-height:1.6;position:relative;z-index:1}
+
+
+/* ===== ARCHIVE INDEX ===== */
+.arch{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.acard{position:relative;display:flex;flex-direction:column;min-height:172px;border:1px solid var(--line);
+  border-radius:15px;background:linear-gradient(165deg,var(--card2),var(--card));padding:19px 19px 17px;
+  overflow:hidden;cursor:pointer;transition:transform .34s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s,opacity .3s}
+.acard::before{content:attr(data-no);position:absolute;right:13px;bottom:3px;font-family:"Space Mono";
+  font-size:52px;font-weight:700;color:var(--ic);opacity:.13;letter-spacing:-.05em;line-height:1;transition:.34s}
+.acard:hover{transform:translateY(-7px);border-color:var(--ic);box-shadow:0 26px 50px -30px var(--ic)}
+.acard:hover::before{opacity:.28}
+.acard .ah{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.acard .adot{width:9px;height:9px;border-radius:50%;background:var(--ic);flex:0 0 auto;
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--ic) 22%, transparent)}
+.acard .adate{font-family:"Space Mono";font-size:11px;color:var(--muted)}
+.acard .aty{margin-left:auto;font-size:9.5px;font-weight:700;padding:2.5px 8px;border-radius:5px;
+  color:var(--ic);border:1px solid color-mix(in srgb, var(--ic) 40%, transparent)}
+.acard h4{font-size:14px;font-weight:700;letter-spacing:-.015em;line-height:1.42;position:relative;z-index:1}
+.acard .af{margin-top:auto;padding-top:12px;font-size:11px;color:var(--muted2);font-family:"Space Mono";
+  display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.acard .af .go{color:var(--ic);font-weight:700;opacity:0;transform:translateX(-4px);transition:.3s;font-family:"Pretendard"}
+.acard:hover .af .go{opacity:1;transform:none}
+.acard.hide{display:none}
+.filterrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.fb{font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:999px;border:1px solid var(--line);
+  background:var(--card);color:var(--muted);cursor:pointer;transition:.22s;display:flex;align-items:center;gap:8px}
+.fb .dot{width:8px;height:8px;border-radius:50%}
+.fb:hover{color:var(--ink);border-color:var(--muted2);transform:translateY(-2px)}
+.fb.on{background:var(--fc,var(--ink));color:#0D1117;border-color:var(--fc,var(--ink))}
+.fb.on .dot{background:#0D1117}
+
+
+/* ===== SPOTLIGHT ===== */
+.spot{border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  background:linear-gradient(150deg,rgba(62,193,172,.10),var(--card) 46%,var(--card2))}
+.spot-in{padding:38px 36px}
+.spot .sl{font-family:"Space Mono";font-size:11px;letter-spacing:.2em;color:var(--p1);font-weight:700}
+.spot h3{margin-top:12px;font-size:clamp(22px,2.7vw,30px);font-weight:800;letter-spacing:-.028em;line-height:1.24}
+.spot .sd{margin-top:16px;font-size:15px;color:var(--ink2);max-width:760px}
+.spot .sd b{color:var(--ink)}
+.spotgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:28px}
+.sp{border:1px solid var(--line);border-radius:13px;background:rgba(13,17,23,.45);padding:18px 17px;transition:.3s}
+.sp:hover{transform:translateY(-5px);border-color:var(--p1);box-shadow:0 20px 38px -28px var(--p1)}
+.sp .spt{font-size:13.5px;font-weight:800;letter-spacing:-.015em;color:var(--ink)}
+.sp .spd{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.6}
+.spot .sgo{display:inline-flex;align-items:center;gap:7px;margin-top:26px;font-size:13px;font-weight:700;color:var(--p1);
+  border:1px solid var(--p1);border-radius:999px;padding:9px 18px;transition:.26s}
+.spot .sgo:hover{background:var(--p1);color:#0D1117}
+
+/* ===== PROGRAM (사업/행사) ===== */
+.prog{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.pcard{border:1px solid var(--line);border-radius:18px;background:linear-gradient(165deg,var(--card2),var(--card));
+  padding:30px 30px 26px;transition:.32s;position:relative;overflow:hidden}
+.pcard::before{content:"";position:absolute;left:0;top:0;height:100%;width:3px;background:var(--gc);opacity:.7;transition:.3s}
+.pcard:hover{transform:translateY(-6px);border-color:var(--gc);box-shadow:0 26px 50px -32px var(--gc)}
+.pcard:hover::before{width:5px;opacity:1}
+.pcard .pl{font-family:"Space Mono";font-size:10.5px;letter-spacing:.16em;color:var(--gc);font-weight:700}
+.pcard h4{margin-top:11px;font-size:20px;font-weight:800;letter-spacing:-.025em;line-height:1.3}
+.pcard .psub{margin-top:8px;font-size:13px;color:var(--gc);font-weight:600}
+.pcard .pd{margin-top:15px;font-size:13.5px;color:var(--ink2);line-height:1.72}
+.pcard .pd b{color:var(--ink)}
+.pfacts{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line);display:grid;gap:9px}
+.pf{display:grid;grid-template-columns:82px 1fr;gap:12px;font-size:12.5px;align-items:start}
+.pf .k{font-family:"Space Mono";font-size:10.5px;letter-spacing:.09em;color:var(--muted2);padding-top:2px}
+.pf .v{color:var(--ink2)}
+.pf .v b{color:var(--ink);font-weight:700}
+.pcard .pgo{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-size:12.5px;font-weight:700;color:var(--gc);
+  opacity:.85;transition:.26s}
+.pcard .pgo:hover{opacity:1;gap:9px}
+.steps{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.step{font-size:11.5px;font-weight:600;color:var(--gc);border:1px solid color-mix(in srgb, var(--gc) 34%, transparent);
+  background:color-mix(in srgb, var(--gc) 8%, transparent);border-radius:6px;padding:4px 10px}
+@media(max-width:1000px){.spotgrid{grid-template-columns:1fr 1fr}.prog{grid-template-columns:1fr}}
+@media(max-width:620px){.spotgrid{grid-template-columns:1fr}.spot-in{padding:28px 24px}.pcard{padding:26px 24px}}
+
+/* ===== CLOSING ===== */
+.closing{padding:100px 0;text-align:center;border-bottom:1px solid var(--line)}
+.closing p{font-size:clamp(20px,2.7vw,32px);font-weight:800;letter-spacing:-.028em;line-height:1.45;max-width:880px;margin:0 auto;text-wrap:balance}
+.closing .h1{color:var(--p1)}.closing .h2{color:var(--p2)}.closing .h3{color:var(--p4)}
+
+footer{padding:36px 0 66px;font-size:12.5px;color:var(--muted)}
+footer .fr{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-start}
+footer b{color:var(--ink)}
+footer .fmark{font-family:"Space Mono";font-size:11px;letter-spacing:.16em;color:var(--muted2)}
+
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:1000px){
+  .keys{grid-template-columns:1fr}
+  .rel,.fieldwrap{grid-template-columns:1fr}
+  .citizen{grid-template-columns:1fr 1fr}
+  .arch{grid-template-columns:1fr 1fr}
+  .part-head{grid-template-columns:1fr;gap:14px}
+  .part-no{margin-top:0;justify-self:start}
+}
+@media(max-width:620px){
+  .citizen,.arch{grid-template-columns:1fr}
+  .mast nav{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<main>
+
+<div class="mast">
+  <div class="wrap row">
+    <div class="brand"><span class="tag mono">IPDC</span> 디지털리포트 Vol.2</div>
+    <nav>
+      <a href="#open">여는 글</a><a href="#p1">길을 찾다</a><a href="#p2">길을 안전하게</a>
+      <a href="#p3">누구에게나</a><a href="#p4">걷고 싶은 길</a><a href="#spot">스마트 특구</a><a href="#program">함께 만들기</a><a href="#archive">전체 글</a>
+    </nav>
+  </div>
+  <div class="progress" id="prog"></div>
+</div>
+
+<!-- COVER -->
+<header class="cover">
+  <div class="wrap">
+    <div class="issue-line"><span class="txt">Digital Report Vol.2</span><span class="ln"></span><span class="txt">Walkable City</span></div>
+    <h1>걷는 도시, <span class="em">인천</span>
+      <span class="sub">길 위에서 만나는 공공디자인</span></h1>
+    <p class="lede">도시를 경험하는 가장 작은 단위는 <b>길</b>입니다.<br>
+    길을 찾고, 안전하게 걷고, 누구나 다닐 수 있고, 마침내 걷고 싶어지는 것 —<br>
+    <b>걷는 도시 인천</b>은 그 네 가지 질문에서 시작합니다.</p>
+    <div class="meta">
+      <span class="k">ISSUE<b>걷는 도시, 인천</b></span>
+      <span class="k">THEME<b>길 위의 공공디자인</b></span>
+      <span class="k">CHAPTERS<b>네 개의 길</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- OPENING -->
+<section class="edit" id="open">
+  <div class="narrow">
+    <div class="rv">
+      <p class="q">우리는 하루에도 몇 번씩 길을 건너고, 골목을 지나고, 표지판을 올려다봅니다.<br>
+      <span class="hl big">그 모든 순간에 공공디자인이 있습니다.</span></p>
+      <p>공공디자인은 거창한 건축물이 아니라, 대개 <b style="color:var(--ink)">길 위의 작은 결정들</b>로 나타납니다.<br>
+      바닥에 그어진 색 하나가 방향을 알려 주고, 골목 어귀의 조명 하나가 밤길의 두려움을 덜어 줍니다.<br>
+      점자블록의 위치, 벤치의 높이, 안내판의 글자 크기까지 <span class="hl2">눈에 잘 띄지 않을수록</span> 잘 작동하는 디자인입니다.</p>
+      <p>이번 호는 그 이야기를 <b style="color:var(--ink)">‘길’</b>이라는 하나의 실로 꿰었습니다.<br>
+      길을 <b style="color:var(--ink)">찾고</b>, <b style="color:var(--ink)">안전하게</b> 걷고,
+      <b style="color:var(--ink)">누구나</b> 다닐 수 있으며, 마침내 <b style="color:var(--ink)">걷고 싶어지는</b> 길로 이어지는 네 개의 장(章)입니다.<br>
+      각 장의 끝에는 관련한 우리 글을 함께 두었으니, 더 깊이 보고 싶은 이야기는 원문에서 이어 보실 수 있습니다.</p>
+      <div class="sign mono">인천테크노파크 공공디자인센터</div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 1 -->
+<section class="part" id="p1" style="--pc:var(--p1)">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">PART 01</span>
+      <div><h2><span class="s">WAYFINDING</span>길을 찾다</h2>
+      <p class="desc">낯선 곳에서 길을 잃지 않는 것은 도시가 시민에게 주는 첫 번째 배려입니다.<br>
+      공항과 항만을 가진 <b>관문 도시 인천</b>에서 길찾기 디자인은 특히 중요합니다.<br>
+      글자를 몰라도, 언어가 달라도 이해할 수 있도록 <b>색·그림·바닥</b>이 함께 말을 겁니다.</p></div>
+    </div>
+    <div class="keys rv">
+      <div class="key"><div class="kt">읽지 않아도 알게 한다</div>
+        <div class="kd">색과 화살표, 픽토그램은 언어를 넘어섭니다.<br>고속도로의 색채유도선처럼,<br>따라가기만 하면 되는 안내가<br>가장 좋은 안내입니다.</div></div>
+      <div class="key"><div class="kt">시선이 닿는 곳에 둔다</div>
+        <div class="kd">아무리 좋은 정보도 보이지 않으면 소용없습니다.<br>걷는 사람의 눈높이와 이동 방향을 따라<br>안내가 이어져야 합니다.</div></div>
+      <div class="key"><div class="kt">하나의 규칙으로 잇는다</div>
+        <div class="kd">구역마다 다른 표기는 오히려 혼란을 줍니다. 도시 전체가 같은 규칙을 공유할 때 길찾기는 비로소 쉬워집니다.</div></div>
+    </div>
+    <div class="rel-label rv"><span class="t">RELATED POSTS</span><span class="l"></span></div>
+    <div class="rel rv" data-posts="11,12,10,17"></div>
+  </div>
+</section>
+
+<!-- PART 2 -->
+<section class="part" id="p2" style="--pc:var(--p2)">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">PART 02</span>
+      <div><h2><span class="s">SAFETY</span>길을 안전하게</h2>
+      <p class="desc">안전은 금지와 경고만으로 지켜지지 않습니다. 좋은 디자인은 <b>막지 않고 이끕니다</b>.<br>
+      자연스럽게 좋은 선택을 하게 만드는 넛지, 어두운 골목을 밝히는 조명,
+      아이의 걸음 속도를 헤아린 통학로가 그렇습니다.</p></div>
+    </div>
+    <div class="keys rv">
+      <div class="key"><div class="kt">막기보다 이끈다</div>
+        <div class="kd">‘하지 마시오’ 대신 발자국 스티커 하나가 사람을 움직입니다. 강요하지 않고 바람직한 행동으로 이끄는 것이 넛지 디자인입니다.</div></div>
+      <div class="key"><div class="kt">어둠을 걷어낸다</div>
+        <div class="kd">밝기는 곧 안심입니다. 보안등과 경관조명은 범죄를 예방하는 동시에, 밤에도 걸을 수 있는 시간을 도시에 돌려줍니다.</div></div>
+      <div class="key"><div class="kt">가장 약한 보행자에 맞춘다</div>
+        <div class="kd">어린이가 안전한 길은 모두에게 안전합니다. 키 높이의 시야, 느린 걸음, 예측하기 어려운 움직임을 기준으로 삼습니다.</div></div>
+    </div>
+    <div class="rel-label rv"><span class="t">RELATED POSTS</span><span class="l"></span></div>
+    <div class="rel rv" data-posts="1,15,14,17"></div>
+  </div>
+</section>
+
+<!-- PART 3 -->
+<section class="part" id="p3" style="--pc:var(--p3)">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">PART 03</span>
+      <div><h2><span class="s">FOR EVERYONE</span>길은 누구에게나</h2>
+      <p class="desc">누군가에게는 아무렇지 않은 턱 하나가, 다른 누군가에게는 넘을 수 없는 벽이 됩니다.<br>
+      나이도, 몸의 조건도, 쓰는 언어도 다른 사람들이 <b>같은 길을 함께 걷는 것</b> —
+      유니버설 디자인이 향하는 곳입니다.</p></div>
+    </div>
+    <div class="keys rv">
+      <div class="key"><div class="kt">특별하지 않게, 그러나 모두에게</div>
+        <div class="kd">따로 만든 통로가 아니라 처음부터 누구나 쓸 수 있는 하나의 길. 배려가 눈에 띄지 않을 때 가장 자연스럽습니다.</div></div>
+      <div class="key"><div class="kt">여러 감각으로 전한다</div>
+        <div class="kd">보는 사람에게는 색과 그림으로, 보기 어려운 사람에게는 점자와 소리로. 하나의 정보를 여러 방법으로 전합니다.</div></div>
+      <div class="key"><div class="kt">이어져야 완성된다</div>
+        <div class="kd">경사로 하나만으로는 부족합니다. 출발지에서 목적지까지 끊기지 않고 이어질 때 비로소 접근성이 완성됩니다.</div></div>
+    </div>
+    <div class="rel-label rv"><span class="t">RELATED POSTS</span><span class="l"></span></div>
+    <div class="rel rv" data-posts="3,14,11"></div>
+  </div>
+</section>
+
+<!-- PART 4 -->
+<section class="part" id="p4" style="--pc:var(--p4)">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">PART 04</span>
+      <div><h2><span class="s">PLACE MAKING</span>걷고 싶은 길</h2>
+      <p class="desc">안전하고 편리한 다음에 오는 질문은 <b>‘또 오고 싶은가’</b>입니다.<br>
+      역사가 배어 있는 거리, 색이 아름다운 풍경, 밤에도 빛나는 장소는
+      스쳐 지나가던 길을 <b>머무는 장소</b>로 바꿉니다.</p></div>
+    </div>
+    <div class="keys rv">
+      <div class="key"><div class="kt">그 자리의 이야기를 꺼낸다</div>
+        <div class="kd">개항장의 근대 건축, 산업의 흔적처럼 이미 있던 이야기를 드러내는 것만으로 거리는 특별해집니다.</div></div>
+      <div class="key"><div class="kt">색으로 기억하게 한다</div>
+        <div class="kd">바다와 하늘, 노을과 갯벌. 그 도시에서만 볼 수 있는 색은 가장 강력한 정체성이 됩니다.</div></div>
+      <div class="key"><div class="kt">밤의 시간을 되찾는다</div>
+        <div class="kd">해가 진 뒤에도 걸을 수 있을 때 도시의 하루는 길어집니다. 조명은 안전이자 동시에 매력입니다.</div></div>
+    </div>
+    <div class="rel-label rv"><span class="t">RELATED POSTS</span><span class="l"></span></div>
+    <div class="rel rv" data-posts="4,2,13,8"></div>
+  </div>
+</section>
+
+<!-- FIELD -->
+<section class="part" id="field" style="--pc:var(--p4)">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">FIELD</span>
+      <div><h2><span class="s">ON THE GROUND</span>인천의 길, 지금 이곳</h2>
+      <p class="desc">이번 호에서 다룬 인천의 현장입니다. 각 장소가 ‘길’의 어떤 국면과 닿아 있는지 함께 보실 수 있습니다.</p></div>
+    </div>
+    <div class="fieldwrap rv" id="fieldWrap"></div>
+  </div>
+</section>
+
+<!-- CITIZEN -->
+<section class="part" id="citizen" style="--pc:var(--p3)">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">CITIZEN</span>
+      <div><h2><span class="s">DESIGNED BY CITIZENS</span>시민이 그린 길</h2>
+      <p class="desc">제3회 인천시민디자인단 정기회의에서 네 개 조가 직접 대상지를 정하고,<br>
+      막연했던 생각을 <b>디자인 설계 시트</b>로 옮겼습니다. 모두 시민이 매일 지나는 길입니다.</p></div>
+    </div>
+    <div class="citizen rv" id="citizenWrap"></div>
+  </div>
+</section>
+
+
+<!-- SPOTLIGHT : 스마트디자인 특구 -->
+<section class="part" id="spot" style="--pc:var(--p1)">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">SPOTLIGHT</span>
+      <div><h2><span class="s">SMART DESIGN DISTRICT</span>기술이 사람을 향할 때</h2>
+      <p class="desc">스마트도시는 먼 미래의 이야기가 아닙니다.<br>
+      우리가 매일 걷는 거리, 신호를 기다리는 순간처럼 <b>아주 평범한 일상 속에서</b> 시작됩니다.</p></div>
+    </div>
+    <div class="spot rv"><div class="spot-in">
+      <div class="sl">인천 스마트디자인 특구 · 구월동 일원 약 1㎢</div>
+      <h3>기술만으로는<br>도시가 완성되지 않습니다</h3>
+      <p class="sd">인천시청을 중심으로 한 구월동 일원에 <b>첨단 기술과 공공디자인을 함께</b> 적용하는 특구가 만들어지고 있습니다.
+      사람이 어떻게 걷는지, 어디에서 쉬는지, 어떤 순간에 불편함을 느끼는지 —
+      <b>행동과 마음을 먼저 살피고 그곳에 필요한 기술을 더하는</b> 방식입니다.
+      특히 아이들이 오가는 통학로와 응급상황에 대응해야 하는 공간에서는 작은 변화 하나가 큰 차이를 만듭니다.</p>
+      <div class="spotgrid">
+        <div class="sp"><div class="spt">바닥형 보행신호등</div><div class="spd">고개를 들지 않아도 신호를 확인할 수 있어, 스마트폰을 보며 걷는 보행자의 사고를 줄입니다.</div></div>
+        <div class="sp"><div class="spt">음성안내 장치</div><div class="spd">보기 어려운 사람에게 소리로 신호를 전합니다. 정보를 여러 감각으로 전하는 배려입니다.</div></div>
+        <div class="sp"><div class="spt">적색 잔여시간 표시기</div><div class="spd">남은 시간을 알려 주어 무리한 횡단을 막습니다. 기다림의 불안을 정보로 바꿉니다.</div></div>
+        <div class="sp"><div class="spt">스마트 그늘막 · 미디어폴</div><div class="spd">잠시 앉아 숨을 고르고 휴대폰을 충전하는 시간. 도시의 쉼표에도 스마트함이 스며듭니다.</div></div>
+      </div>
+      <a class="sgo" href="https://blog.naver.com/ipdc0220/224391094337" target="_blank" rel="noopener">특구 이야기 전문 보기 ↗</a>
+    </div></div>
+  </div>
+</section>
+
+<!-- PROGRAM : 함께 만드는 길 -->
+<section class="part" id="program" style="--pc:var(--ac)">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">PROGRAM</span>
+      <div><h2><span class="s">MAKING IT TOGETHER</span>길을 함께 만드는 방법</h2>
+      <p class="desc">좋은 길은 행정 혼자 만들 수 없습니다.
+      시민의 아이디어를 모으고, 정책을 도입하기 전에 먼저 실험해 보는 것<br>
+      인천은 <b>사회실험</b>과 <b>공모전</b>이라는 두 가지 방법으로 길을 함께 만들고 있습니다.</p></div>
+    </div>
+    <div class="prog rv">
+
+      <div class="pcard" style="--gc:#3EC1AC">
+        <div class="pl">EDUCATION</div>
+        <h4>누구나 공감하는<br>인천형 사회실험 교육</h4>
+        <div class="psub">인천 창의디자인 사회실험 사업</div>
+        <p class="pd">사회실험은 사회문제를 실험적으로 조사해 <b>정책 도입 전에 가능성과 부작용을 미리 검토하는 방법론</b>입니다.
+        흡연 문제나 시민 간 소통 갈등처럼 기존 행정체계만으로는 풀기 어려운 복합적 문제를,
+        부서 간 협력과 시민 참여로 접근합니다. 인천시에서 처음 마련된 공공디자인 전문교육으로,
+        시민과 공무원이 함께 행정 현안의 해결 방안을 모색하는 자리였습니다.</p>
+        <div class="steps">
+          <span class="step">대상 설정</span><span class="step">목표 수립</span><span class="step">계획 작성</span>
+          <span class="step">적용·실증</span><span class="step">평가·사업화 판단</span>
+        </div>
+        <div class="pfacts">
+          <div class="pf"><span class="k">장소</span><span class="v">인천테크노파크 미추홀타워 본관동 비즈니스라운지 3F</span></div>
+          <div class="pf"><span class="k">세션 1</span><span class="v">사회실험 개념 및 프로세스 · <b>엄지연</b> 前 인천시 전문디자이너</span></div>
+          <div class="pf"><span class="k">세션 2</span><span class="v">사회실험 국내외 사례 · <b>이종혁</b> 광운대학교 미디어커뮤니케이션학부 교수</span></div>
+        </div>
+        <a class="pgo" href="https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000014972898&curPage=1&beginDt=&srchRepTitle=%EC%82%AC%ED%9A%8C%EC%8B%A4%ED%97%98&srchRepContents=&endDt=&srchMainManagerDeptNm=" target="_blank" rel="noopener">인천시 보도자료 보기 ↗</a>
+      </div>
+
+      <div class="pcard" style="--gc:#A3C93A">
+        <div class="pl">COMPETITION</div>
+        <h4>LINK : INCHEON<br>인천시 공공디자인 공모전</h4>
+        <div class="psub">디자인으로 연결되는 창의도시</div>
+        <p class="pd">기후위기로 변화하는 환경 속에서 <b>지속가능한 미래와 환경 보호를 위한 새로운 시각</b>을 바탕으로,
+        창의도시 인천을 위한 창의적이고 혁신적인 공공디자인 아이디어를 모았습니다.
+        공간과 자연을, 메시지와 계획을, 그리고 환경을 잇는다는 뜻을 담아
+        <b>LINK</b>라는 이름을 붙였습니다.</p>
+        <div class="steps">
+          <span class="step">LINK · SPACE · NATURE</span><span class="step">LINK · MESSAGE · PLAN</span><span class="step">LINK · ENVIRONMENT</span>
+        </div>
+        <div class="pfacts">
+          <div class="pf"><span class="k">주제</span><span class="v"><b>기후위기시대, 지속가능한 인천을 위한 공공디자인</b></span></div>
+          <div class="pf"><span class="k">공모분야</span><span class="v">공공공간 · 공공시설물 · 공공시각매체</span></div>
+          <div class="pf"><span class="k">참여대상</span><span class="v">대한민국 국민 누구나</span></div>
+          <div class="pf"><span class="k">포상</span><span class="v">인천광역시장 표창 · 총 상금 <b>800만원</b> (대상 200만원)</span></div>
+          <div class="pf"><span class="k">주최·주관</span><span class="v">인천광역시 · 인천테크노파크 공공디자인센터</span></div>
+        </div>
+        <a class="pgo" href="https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000014859596&curPage=1&beginDt=&srchRepTitle=%EA%B3%B5%EB%AA%A8%EC%A0%84&srchRepContents=&endDt=&srchMainManagerDeptNm=" target="_blank" rel="noopener">인천시 보도자료 보기 ↗</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARCHIVE -->
+<section class="part" id="archive" style="--pc:var(--p1);border-bottom:none">
+  <div class="wrap">
+    <div class="part-head rv">
+      <span class="part-no">ARCHIVE</span>
+      <div><h2><span class="s">ALL POSTS</span>이번 호에 엮인 글</h2>
+      <p class="desc">이번 호에 엮은 블로그 글 전체입니다. 주제별로 골라 볼 수 있고, 누르면 원문이 열립니다.</p></div>
+    </div>
+    <div class="filterrow rv" id="filterrow"></div>
+    <div class="arch rv" id="archList"></div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="wrap rv">
+    <p>길이 <span class="h1">쉬워지고</span>, <span class="h2">안전해지고</span>,
+    <span class="h3">아름다워질 때</span><br>도시는 비로소 걷고 싶은 곳이 됩니다.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fr">
+    <div>
+      <b>IPDC 디지털리포트 Vol.2 · 걷는 도시, 인천</b><br>
+      인천테크노파크 공공디자인센터 · 2026년 7~8월
+    </div>
+    <div class="fmark">IPDC PUBLIC DESIGN CENTER</div>
+  </div>
+</footer>
+</main>
+
+<script>
+const BASE="https://blog.naver.com/ipdc0220/";
+const THEME={"길찾기":"#3EC1AC","안전":"#E0803F","모두를 위한":"#A78BE0","장소성":"#5B9BD5","기록·소식":"#828E9C"};
+const POSTS={
+ 1:{d:"07.06",t:"작은 변화로 더 나은 행동을 만드는 넛지디자인",th:"안전",
+    s:"강요하지 않고 자연스럽게 바람직한 행동을 이끄는 디자인의 원리."},
+ 2:{d:"07.09",t:"강남 한복판에 숨은 토끼굴",th:"장소성",
+    s:"어둡던 지하통로가 시민이 머무는 공간으로 다시 태어난 과정."},
+ 3:{d:"07.15",t:"공공디자인과 유니버설디자인의 관계",th:"모두를 위한",
+    s:"두 개념이 어디서 다르고 어디서 만나는지 짚어 본 글."},
+ 4:{d:"07.16",t:"새롭게 변화한 인천 개항누리길",th:"장소성",
+    s:"근대 개항의 역사를 품은 거리에 보행 편의와 경관을 더했습니다."},
+ 5:{d:"07.16",t:"7월 뉴스레터 vol.4",th:"기록·소식",
+    s:"넛지 디자인과 시민디자인단 등 7월의 소식을 모았습니다."},
+ 6:{d:"07.23",t:"인천 남동산단의 새로운 변화",th:"안전",
+    s:"일하는 공간의 거리와 보행 환경, 안전시설을 함께 정비했습니다."},
+ 7:{d:"07.28",t:"새롭게 만나는 인천 도시경관 아카이브",th:"기록·소식",
+    s:"도시의 변화를 기록해 시민 누구나 볼 수 있게 한 누리집."},
+ 8:{d:"07.30",t:"인천상륙작전기념관 야간명소화 경관개선",th:"장소성",
+    s:"역사 공간을 빛으로 다시 만나도록, 경관조명과 보행안전 조명을 함께."},
+ 9:{d:"07.31",t:"‘2026 인천시민디자인단’ 제3회 정기회의",th:"길찾기",
+    s:"시민이 직접 대상지를 정하고 아이디어를 설계 시트로 구체화했습니다."},
+ 10:{d:"08.03",t:"스마트 공공디자인이 만드는 도시",th:"길찾기",
+    s:"기술이 더해진 횡단보도·정류장·벤치가 일상을 안전하고 편리하게."},
+ 11:{d:"08.07",t:"길을 잃지 않는 도시, 인천의 웨이파인딩",th:"길찾기",
+    s:"공항과 항만의 도시에서 누구나 쉽게 길을 찾도록 돕는 안내 체계."},
+ 12:{d:"08.10",t:"색으로 길을 안내하다, 고속도로 노면 색채유도선",th:"길찾기",
+    s:"복잡한 분기점에서 색만 따라가면 방향을 알 수 있게 한 디자인."},
+ 13:{d:"08.13",t:"인천을 디자인하는 색｜인천 10색",th:"장소성",
+    s:"바다와 하늘, 노을과 갯벌까지 인천의 풍경을 열 가지 색으로."},
+ 14:{d:"08.20",t:"작은 눈높이에서 시작되는, 어린이를 위한 공공디자인",th:"모두를 위한",
+    s:"아이의 키와 걸음 속도까지 헤아리는 네 가지 원칙."},
+ 15:{d:"08.21",t:"공공디자인으로 달라지는 골목길",th:"안전",
+    s:"어둡고 낡은 골목이 조명과 디자인으로 안전해진 사례."},
+ 16:{d:"08.24",t:"8월 뉴스레터 vol.5",th:"기록·소식",
+    s:"8월의 공공디자인 소식과 시민디자인단 활동을 전했습니다."},
+ 17:{d:"08.28",t:"기술이 사람을 향할 때, 인천 스마트디자인 특구",th:"안전",
+    s:"구월동 일원 약 1㎢에 보행신호등·음성안내·스마트 그늘막을 더해 일상을 바꿉니다."}
+};
+const ID={1:"224337811244",2:"224341392849",3:"224347087629",4:"224348146607",5:"224348447240",
+ 6:"224355646499",7:"224360518911",8:"224362609350",9:"224362725928",10:"224366900544",
+ 11:"224371150128",12:"224374169165",13:"224377393635",14:"224384393385",15:"224385858321",16:"224388139730",17:"224391094337"};
+
+// related posts per part
+document.querySelectorAll('.rel[data-posts]').forEach(el=>{
+ const ids=el.dataset.posts.split(',').map(Number);
+ el.innerHTML=ids.map(i=>{const p=POSTS[i];
+  return `<div class="rcard" data-href="${BASE+ID[i]}">
+   <div class="rno">${String(i).padStart(2,'0')}</div>
+   <div class="rb"><div class="rdate">${p.d}</div><h4>${p.t}</h4>
+     <div class="rs">${p.s}</div><div class="rgo">원문 보기 ↗</div></div>
+  </div>`;}).join('');
+});
+
+// field
+const FIELD=[
+ {l:"WALKING STREET",t:"인천 개항누리길",c:"#5B9BD5",p:"근대 건축과 골목이 남은 중구의 거리. 보행 공간을 넓히고 안내·휴식 시설을 더해 걷는 즐거움을 살렸습니다.",tag:"걷고 싶은 길",n:4},
+ {l:"INDUSTRIAL ROAD",t:"남동국가산업단지",c:"#E0803F",p:"호구포역 주변을 중심으로 보행 공간과 안전시설, 휴게 공간을 정비해 일하는 사람의 하루를 바꾸고 있습니다.",tag:"길을 안전하게",n:6},
+ {l:"NIGHT SCAPE",t:"인천상륙작전기념관 · 인권로",c:"#5B9BD5",p:"경관조명과 보행안전 조명을 함께 조성해, 역사 공간을 밤에도 안심하고 찾을 수 있는 장소로 만들었습니다.",tag:"걷고 싶은 길",n:8},
+ {l:"WAYFINDING",t:"인천의 안내 체계",c:"#3EC1AC",p:"공항·항만·지하상가로 이어지는 관문 도시에서, 외국인과 어르신도 쉽게 이해할 수 있는 길찾기 체계를 살폈습니다.",tag:"길을 찾다",n:11},
+ {l:"CITY COLOR",t:"인천 10색",c:"#5B9BD5",p:"바다색과 하늘색, 정서진의 석양색과 개항장의 벽돌색까지. 인천에서만 볼 수 있는 색을 정리했습니다.",tag:"걷고 싶은 길",n:13},
+ {l:"SMART DISTRICT",t:"인천 스마트디자인 특구",c:"#3EC1AC",p:"인천시청을 중심으로 한 구월동 일원 약 1㎢. 바닥형 보행신호등과 음성안내 장치, 적색 잔여시간 표시기가 통학로와 횡단보도의 안전을 돕습니다.",tag:"길을 안전하게",n:17},
+ {l:"ARCHIVE",t:"인천 도시경관 아카이브",c:"#828E9C",p:"길과 거리의 변화를 기록해 두는 곳. 누리집 개편으로 시민 누구나 인천의 어제와 오늘을 찾아볼 수 있습니다.",tag:"기록",n:7}];
+document.getElementById('fieldWrap').innerHTML=FIELD.map(f=>`
+ <div class="fitem" style="--fc:${f.c}">
+  <div class="fl mono">${f.l}</div><h4>${f.t}</h4><p>${f.p}</p>
+  <div class="fs">${f.tag} <span style="color:var(--muted2)">·</span>
+   <a href="${BASE+ID[f.n]}" target="_blank" rel="noopener"><b>관련 글 보기 ↗</b></a></div>
+ </div>`).join('');
+
+// citizen
+const CZ=[["01","약산초 통학로","아이들이 매일 오가는 길에 스마트 공공시설물을 더해 안전을 높이는 제안"],
+ ["02","함박마을 세계음식거리","여러 나라 주민이 함께 사는 동네를 위한 다국어 안내지도"],
+ ["03","월미관문 유휴공간","비어 있던 관문에 그래픽과 이야기를 입혀 인천의 첫인상을 바꾸는 계획"],
+ ["04","부평역 지하상가","복잡한 지하 공간을 네 가지 색으로 나눠 길을 잃지 않게 하는 길찾기 시스템"]];
+document.getElementById('citizenWrap').innerHTML=CZ.map(c=>`
+ <div class="cz" data-no="${c[0]}"><div class="cl">${c[0]}조</div><h4>${c[1]}</h4><p>${c[2]}</p></div>`).join('');
+
+// archive
+const THEMES=["길찾기","안전","모두를 위한","장소성","기록·소식"];
+const fr=document.getElementById('filterrow');
+const cnt=t=>Object.values(POSTS).filter(p=>p.th===t).length;
+fr.innerHTML=`<button class="fb on" data-t="ALL">전체 17</button>`+
+ THEMES.map(t=>`<button class="fb" data-t="${t}"><span class="dot" style="background:${THEME[t]}"></span>${t} ${cnt(t)}</button>`).join('');
+const al=document.getElementById('archList');
+function renderArch(t){
+ al.innerHTML=Object.entries(POSTS).map(([i,p])=>{
+  const hide=(t!=='ALL'&&p.th!==t)?' hide':'';
+  return `<div class="acard${hide}" style="--ic:${THEME[p.th]}" data-no="${String(i).padStart(2,'0')}" data-href="${BASE+ID[i]}">
+   <div class="ah"><span class="adot"></span><span class="adate">${p.d}</span><span class="aty">${p.th}</span></div>
+   <h4>${p.t}</h4>
+   <div class="af"><span>원문</span><span class="go">보기 ↗</span></div>
+  </div>`;}).join('');
+ al.querySelectorAll('.acard').forEach(c=>c.addEventListener('click',()=>window.open(c.dataset.href,'_blank','noopener')));
+}
+renderArch('ALL');
+fr.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{
+ fr.querySelectorAll('.fb').forEach(x=>{x.classList.remove('on');x.style.removeProperty('--fc')});
+ b.classList.add('on');
+ if(b.dataset.t!=='ALL') b.style.setProperty('--fc',THEME[b.dataset.t]);
+ renderArch(b.dataset.t);
+}));
+
+// clickable related cards
+document.addEventListener('click',e=>{
+ const c=e.target.closest('.rcard');
+ if(c&&c.dataset.href) window.open(c.dataset.href,'_blank','noopener');
+});
+
+// reveal + progress
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+ if(!e.isIntersecting)return; e.target.classList.add('in'); io.unobserve(e.target);
+}),{threshold:.13});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+const prog=document.getElementById('prog');
+addEventListener('scroll',()=>{
+ const h=document.documentElement;
+ prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
+</script>
+</body>
+</html>
